@@ -1,8 +1,8 @@
 // script.js - WordClub game logic
 (() => {
-    const WORD = 'AFFLELOU'; // 5-letter target (changeable)
+    const WORD = 'IDOIA'; // 5-letter target (changeable)
     const MAX_ATTEMPTS = 4;
-    const WORD_LENGTH = 8; // PALABRA LENGTH
+    const WORD_LENGTH = 5; // PALABRA LENGTH
         
 
     let attempt = 0;
