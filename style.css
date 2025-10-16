@@ -30,7 +30,7 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
 
 /* ##### PALABRA LENGTH en ".row {repeat(X, 56px)" */
 #game-board { display:flex; flex-direction:column; gap:10px; align-items:center; margin-bottom:10px }
-.row { display:grid; grid-template-columns: repeat(7, 56px); gap:8px }  
+.row { display:grid; grid-template-columns: repeat(6, 56px); gap:8px }  
 .cell { width:56px; height:56px; background:#ffffff; color:#071726; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; text-transform:uppercase; border:2px solid #071726; box-sizing:border-box; transition:transform .12s ease, background .12s ease }
 /* ##### */
 
@@ -143,4 +143,5 @@ button:hover {
     font-size: 1.2em;
     margin-top: 10px;
     color: #e43a19; /* Rojo sutil para el mensaje */
+
 }
