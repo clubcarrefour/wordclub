@@ -15,7 +15,7 @@ body {
     max-width: 460px;
     margin: 28px auto;
     padding: 20px 18px 26px;
-    background: linear-gradient(180deg,#0b2740 0%, #0f354f 100%);
+    background: linear-gradient(180deg,#004f98 0%, #0f2a4f 100%);
     border-radius: 12px;
     box-shadow: 0 8px 36px rgba(2,12,27,0.6);
     text-align: center;
@@ -29,8 +29,20 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
 /* Board */
 
 /* ##### PALABRA LENGTH en ".row {repeat(X, 56px)" */
-#game-board { display:flex; flex-direction:column; gap:10px; align-items:center; margin-bottom:10px }
-.row { display:grid; grid-template-columns: repeat(6, 56px); gap:8px }  
+#game-board { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    align-items: center; 
+    margin: 0 auto 10px;
+    width: fit-content;
+}
+.row { 
+    display: grid; 
+    grid-template-columns: repeat(6, 56px); 
+    gap: 8px;
+    margin: 0 auto;
+}
 .cell { width:56px; height:56px; background:#ffffff; color:#071726; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem; text-transform:uppercase; border:2px solid #071726; box-sizing:border-box; transition:transform .12s ease, background .12s ease }
 /* ##### */
 
@@ -45,13 +57,37 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
 .cell.selected { outline: 3px solid rgba(10,58,98,0.18); box-shadow: 0 0 0 3px rgba(10,58,98,0.06); transform: translateY(-2px); }
 
 .controls { display:flex; justify-content:center; gap:8px; margin-top:6px }
-#guess-input { width:200px; padding:10px; font-size:1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:#fff; text-transform:uppercase }
+#guess-input { width:200px; padding:10px; font-size:1rem; border-radius:8px; border:1px solid rgba(255, 255, 255, 0.08); background:rgba(255, 255, 255, 0.03); color:#fff; text-transform:uppercase }
 #guess-btn { background:#0a3a62; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer }
 #guess-btn:hover { filter:brightness(1.05) }
 #message { margin-top:12px; min-height:22px; font-weight:700; color:#ffffff }
 .hint { font-size:0.85rem; color:rgba(255,255,255,0.85); margin-top:10px }
 
-@media (max-width:480px){ .row { grid-template-columns: repeat(8, 44px) } .cell { width:44px; height:44px; font-size:1.15rem } }
+@media (max-width:480px){ 
+    .row { 
+        grid-template-columns: repeat(6, 44px);
+        margin: 0 auto;
+    } 
+    .cell { 
+        width: 44px; 
+        height: 44px; 
+        font-size: 1.15rem;
+    }
+    #game-board { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    align-items: center; 
+    margin: 0 auto 10px;
+    width: fit-content;
+    }
+    .row { 
+        display: grid; 
+        grid-template-columns: repeat(6, 56px); 
+        gap: 8px;
+        margin: 0 auto;
+    }
+}
 /* style.css */
 body {
     font-family: 'Montserrat', sans-serif, Arial;
@@ -63,7 +99,7 @@ body {
     justify-content: flex-start;
     min-height: 100vh;
     margin: 0;
-    background-color: #0a2647; /* Azul oscuro Carrefour */
+    background-color: #004f98; /* Azul oscuro Carrefour */
 }
 
 header {
@@ -86,11 +122,11 @@ h1 {
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(239, 5, 5, 0.831);
     text-align: center;
     width: 80%;
     max-width: 500px;
-    color: #0a2647;
+    color: #da0a22;
 }
 
 #grid {
@@ -142,6 +178,5 @@ button:hover {
 #message {
     font-size: 1.2em;
     margin-top: 10px;
-    color: #e43a19; /* Rojo sutil para el mensaje */
-
+    color: #ffffff; /* Rojo sutil para el mensaje */
 }

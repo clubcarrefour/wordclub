@@ -1,6 +1,6 @@
 // script.js - WordClub game logic
 (() => {
-    const WORD = 'AHORRO'; // 5-letter target (changeable)
+    const WORD = 'PRENSA'; // 5-letter target (changeable)
     const MAX_ATTEMPTS = 4;
     const WORD_LENGTH = 6; // PALABRA LENGTH
         
@@ -17,6 +17,29 @@
     const logoReset = document.getElementById('logo-reset');
 
     const originalLogoSrc = logo?.src || '';
+
+    // accent map: map accented chars to their base letter (keep Ñ as Ñ)
+    const ACCENT_MAP = {
+        'Á':'A','À':'A','Â':'A','Ä':'A','Ã':'A','Å':'A','á':'A','à':'A','â':'A','ä':'A','ã':'A','å':'A',
+        'É':'E','È':'E','Ê':'E','Ë':'E','é':'E','è':'E','ê':'E','ë':'E',
+        'Í':'I','Ì':'I','Î':'I','Ï':'I','í':'I','ì':'I','î':'I','ï':'I',
+        'Ó':'O','Ò':'O','Ô':'O','Ö':'O','Õ':'O','Ó':'O','ó':'O','ò':'O','ô':'O','ö':'O','õ':'O',
+        'Ú':'U','Ù':'U','Û':'U','Ü':'U','ú':'U','ù':'U','û':'U','ü':'U',
+        'Ç':'C','ç':'C',
+        'Ñ':'Ñ','ñ':'Ñ',
+        'Ý':'Y','ý':'Y','ÿ':'Y'
+    };
+
+    function normalizeLetters(str) {
+        if (!str) return '';
+        // keep case-insensitive: work in uppercase
+        const up = str.toUpperCase();
+        let out = '';
+        for (let ch of up) {
+            out += (ACCENT_MAP[ch] || ch);
+        }
+        return out;
+    }
 
     // build board
     let activeCol = 0; // selected column in current row
@@ -46,7 +69,8 @@
                     const key = e.key;
                     if (/^[a-zA-ZÑñÁÉÍÓÚáéíóúüÜ]$/.test(key)) {
                         e.preventDefault();
-                        cell.textContent = key.toUpperCase();
+                        // display normalized character (strip diacritics) in the cell
+                        cell.textContent = normalizeLetters(key);
                         // move to next cell when typing
                         const next = Math.min(WORD_LENGTH - 1, parseInt(cell.dataset.col) + 1);
                         setActiveCell(next);
@@ -94,24 +118,25 @@
     }
 
     function checkGuess(guess) {
-        guess = guess.toUpperCase();
+        // guess may contain accents; compare using normalized letters but preserve display
         const res = Array(WORD_LENGTH).fill('absent');
-        const wordArr = WORD.split('');
+        const normWordArr = normalizeLetters(WORD).split('');
+        const normGuess = normalizeLetters(guess);
 
-        // correct positions first
+        // correct positions first (using normalized letters)
         for (let i = 0; i < WORD_LENGTH; i++) {
-            if (guess[i] === wordArr[i]) {
+            if (normGuess[i] === normWordArr[i]) {
                 res[i] = 'correct';
-                wordArr[i] = null;
+                normWordArr[i] = null;
             }
         }
         // present elsewhere
         for (let i = 0; i < WORD_LENGTH; i++) {
             if (res[i] === 'correct') continue;
-            const idx = wordArr.indexOf(guess[i]);
+            const idx = normWordArr.indexOf(normGuess[i]);
             if (idx !== -1) {
                 res[i] = 'present';
-                wordArr[idx] = null;
+                normWordArr[idx] = null;
             }
         }
         return res;
@@ -121,7 +146,8 @@
         const row = board.children[rowIdx];
         for (let i = 0; i < WORD_LENGTH; i++) {
             const cell = row.children[i];
-            cell.textContent = guess[i];
+            // display normalized character (strip diacritics) so accents show without tilde
+            cell.textContent = normalizeLetters(guess[i] || '');
             cell.classList.remove('absent','present','correct','win');
             cell.classList.add(result[i]);
             // once result is applied, disable editing on these cells
@@ -145,18 +171,21 @@
         // Determine guess: priority to full input box; otherwise read row cells
         let guess = input.value.trim().toUpperCase();
         if (!guess) {
-            // build from cells
+            // build from cells (cells display normalized letters already)
             const row = board.children[attempt];
             let built = '';
             for (let i = 0; i < WORD_LENGTH; i++) built += (row.children[i].textContent || '');
-            guess = built.toUpperCase();
+            // ensure built guess is normalized (no diacritics) and uppercase
+            guess = normalizeLetters(built);
         }
 
         if (guess.length !== WORD_LENGTH) {
             showMessage(`La palabra debe tener ${WORD_LENGTH} letras.`);
             return;
         }
-        if (!/^[A-ZÑÁÉÍÓÚÜ]+$/.test(guess)) {
+        // validate normalized form (removes accents) so accents don't break validation
+        const normGuessForValidation = normalizeLetters(guess);
+        if (!/^[A-ZÑ]+$/.test(normGuessForValidation)) {
             showMessage('Solo letras permitidas.');
             return;
         }
@@ -164,7 +193,7 @@
         const result = checkGuess(guess);
         applyResultToRow(attempt, guess, result);
 
-        if (guess === WORD) {
+        if (normalizeLetters(guess) === normalizeLetters(WORD)) {
             revealWin(attempt);
             showMessage('¡Acertaste!');
             gameEnded = true;
@@ -228,12 +257,13 @@
         overlayInput.style.fontFamily = 'Montserrat, Arial, sans-serif';
         document.body.appendChild(overlayInput);
 
-        // input event: set letter and move next
+        // input event: set letter and move next (normalize display)
         overlayInput.addEventListener('input', (e) => {
-            const val = overlayInput.value.trim().toUpperCase();
+            const val = overlayInput.value.trim();
             if (!val) return;
             const char = val[0];
-            if (!/^[A-ZÑÁÉÍÓÚÜ]$/.test(char)) {
+            const normChar = normalizeLetters(char);
+            if (!/^[A-ZÑ]$/.test(normChar)) {
                 overlayInput.value = '';
                 return;
             }
@@ -241,7 +271,8 @@
             if (!row) return;
             const cell = row.children[overlayInput._col];
             if (!cell) return;
-            cell.textContent = char;
+            // display normalized character (strip diacritics)
+            cell.textContent = normChar;
             overlayInput.value = '';
             // move to next cell
             const next = Math.min(WORD_LENGTH - 1, overlayInput._col + 1);
@@ -354,8 +385,4 @@
     // init
     initBoard();
     showMessage(`Palabra de ${WORD_LENGTH} letras. ¡Tienes ${MAX_ATTEMPTS} intentos!`);
-
 })();
-
-
-
