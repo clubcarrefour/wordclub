@@ -39,7 +39,7 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
 }
 .row { 
     display: grid; 
-    grid-template-columns: repeat(6, 56px); 
+    grid-template-columns: repeat(7, 56px); 
     gap: 8px;
     margin: 0 auto;
 }
@@ -64,8 +64,9 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
 .hint { font-size:0.85rem; color:rgba(255,255,255,0.85); margin-top:10px }
 
 @media (max-width:480px){ 
+    /* default small-screen sizing */
     .row { 
-        grid-template-columns: repeat(6, 44px);
+        grid-template-columns: repeat(7, 44px);
         margin: 0 auto;
     } 
     .cell { 
@@ -74,19 +75,22 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
         font-size: 1.15rem;
     }
     #game-board { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
-    align-items: center; 
-    margin: 0 auto 10px;
-    width: fit-content;
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        align-items: center; 
+        margin: 0 auto 10px;
+        width: 100%;
+        padding: 0 8px; /* small padding to avoid touching edges */
     }
-    .row { 
-        display: grid; 
-        grid-template-columns: repeat(6, 56px); 
-        gap: 8px;
-        margin: 0 auto;
-    }
+
+    /* If the word length is 7, make tiles a bit smaller so first/last fit on narrow screens */
+    #game-board.len-7 .row { grid-template-columns: repeat(7, 40px); }
+    #game-board.len-7 .cell { width:40px; height:40px; font-size:1.05rem }
+
+    /* For 8 letters, shrink more */
+    #game-board.len-8 .row { grid-template-columns: repeat(8, 36px); gap:6px }
+    #game-board.len-8 .cell { width:36px; height:36px; font-size:0.95rem }
 }
 /* style.css */
 body {
@@ -131,7 +135,7 @@ h1 {
 
 #grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     grid-gap: 6px;
     margin-bottom: 10px;
 }

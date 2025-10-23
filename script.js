@@ -1,8 +1,8 @@
 // script.js - WordClub game logic
 (() => {
-    const WORD = 'GAMING'; // 5-letter target (changeable)
+    const WORD = 'FEUVERT'; // 5-letter target (changeable)
     const MAX_ATTEMPTS = 4;
-    const WORD_LENGTH = 6; // PALABRA LENGTH
+    const WORD_LENGTH = 7; // PALABRA LENGTH
         
 
     let attempt = 0;
@@ -44,6 +44,13 @@
     // build board
     let activeCol = 0; // selected column in current row
     function initBoard() {
+        // mark board with length class so CSS can adapt on small screens
+        board.classList.remove('len-7','len-8');
+        if (typeof WORD_LENGTH === 'number') {
+            if (WORD_LENGTH === 7) board.classList.add('len-7');
+            if (WORD_LENGTH === 8) board.classList.add('len-8');
+        }
+
         board.innerHTML = '';
         for (let r = 0; r < MAX_ATTEMPTS; r++) {
             const row = document.createElement('div');
@@ -385,5 +392,4 @@
     // init
     initBoard();
     showMessage(`Palabra de ${WORD_LENGTH} letras. ¡Tienes ${MAX_ATTEMPTS} intentos!`);
-
 })();
