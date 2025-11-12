@@ -39,7 +39,7 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
 }
 .row { 
     display: grid; 
-    grid-template-columns: repeat(7, 56px); 
+    grid-template-columns: repeat(5, 56px); #### PALABRA LENGTH
     gap: 8px;
     margin: 0 auto;
 }
@@ -85,7 +85,7 @@ h1 { font-size:1.3rem; margin:4px 0 14px; color:#fff; letter-spacing:1px }
     }
 
     /* If the word length is 7, make tiles a bit smaller so first/last fit on narrow screens */
-    #game-board.len-7 .row { grid-template-columns: repeat(7, 40px); }
+    #game-board.len-7 .row { grid-template-columns: repeat(5, 40px); }   #### PALABRA LENGHT
     #game-board.len-7 .cell { width:40px; height:40px; font-size:1.05rem }
 
     /* For 8 letters, shrink more */
@@ -183,4 +183,5 @@ button:hover {
     font-size: 1.2em;
     margin-top: 10px;
     color: #ffffff; /* Rojo sutil para el mensaje */
+
 }
