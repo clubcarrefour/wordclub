@@ -1,6 +1,6 @@
 // script.js - WordClub game logic
 (() => {
-    const WORD = 'ABONO'; // 5-letter target (changeable)
+    const WORD = 'JOVEN'; // 5-letter target (changeable)
     const MAX_ATTEMPTS = 4;
     const WORD_LENGTH = 5; // PALABRA LENGTH
         
@@ -394,4 +394,5 @@
     showMessage(`Palabra de ${WORD_LENGTH} letras. ¡Tienes ${MAX_ATTEMPTS} intentos!`);
 
 })();
+
 
